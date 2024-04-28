@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func findUserByEmail(email string) (*models.User, error) {
+func FindUserByEmail(email string) (*models.User, error) {
 
 	db, err := database.PostgreSQLConnection()
 	if err != nil {
@@ -32,7 +32,7 @@ func UserSignIn(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body"})
 	}
 
-	user, err := findUserByEmail(signInUser.Email)
+	user, err := FindUserByEmail(signInUser.Email)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -78,7 +78,7 @@ func CreateUser(c *fiber.Ctx) error {
 	var users []models.User
 	result := db.Find(&users)
 
-	user, err := findUserByEmail(createUserStruct.Email)
+	user, err := FindUserByEmail(createUserStruct.Email)
 	if err != nil {
 		return ErrorHandler(c, fiber.StatusInternalServerError, err.Error())
 	}

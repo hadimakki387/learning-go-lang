@@ -16,4 +16,5 @@ type User struct {
 	ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
 	CreatedAt    time.Time      // Automatically managed by GORM for creation time
 	UpdatedAt    time.Time      // Automatically managed by GORM for update time
+	Posts        []Post         `gorm:"foreignKey:UserID"`
 }

@@ -1,7 +1,10 @@
 package routes
 
 import (
+	"new-go-api/app/controllers"
+	"new-go-api/app/validations"
 	"new-go-api/pkg/middleware"
+	"new-go-api/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,8 +13,8 @@ import (
 func PrivateRoutes(a *fiber.App) {
 	// Create routes group.
 	route := a.Group("/api/v1")
-
-	// Add middleware for all routes.
-	route.Use(middleware.JWTProtected())
-	// route.Get("/user", controllers.UserSignUp)
+	route.Post("/post", middleware.JWTProtected(), utils.ValidateInput(&validations.CreatePostStruct{}), controllers.CreatePost)
+	route.Get("/post/get-by-user", middleware.JWTProtected(), controllers.GetUserWithPost)
+	route.Patch("/post/update/:id", middleware.JWTProtected(), utils.ValidateInput(&validations.UpdatePostStruct{}), controllers.UpdatePost)
+	route.Delete("/post/delete/:id", middleware.JWTProtected(), controllers.DeletePost)
 }

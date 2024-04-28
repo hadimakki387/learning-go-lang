@@ -19,9 +19,15 @@ func ValidateToken(token string, c *fiber.Ctx) error {
 		return []byte("secret_key"), nil
 	})
 
+	fmt.Println("validatedToken:")
+	fmt.Println(validatedToken)
+
+	fmt.Println("err:")
+	fmt.Println(err)
+
 	// Check for errors during token validation
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to validate token"})
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
 	// Check if the token is valid
@@ -33,15 +39,11 @@ func ValidateToken(token string, c *fiber.Ctx) error {
 }
 
 func GenerateToken(user string, exp time.Time) (string, error) {
-	// Generate JWT token
 	token := jwt.New(jwt.SigningMethodHS256)
-
-	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
 	claims["user"] = user
-	claims["exp"] = exp
+	claims["exp"] = exp.Unix() // Ensure exp is a Unix timestamp
 
-	// Generate encoded token and send it as response
 	tokenString, err := token.SignedString([]byte("secret_key"))
 	if err != nil {
 		return "", err

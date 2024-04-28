@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"new-go-api/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,7 +11,6 @@ import (
 
 func JWTProtected() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		fmt.Println("middleware")
 		token := c.Get("Authorization")
 		if token == "" {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "No token found"})

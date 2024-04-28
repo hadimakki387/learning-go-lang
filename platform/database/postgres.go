@@ -16,7 +16,7 @@ func PostgreSQLConnection() (*gorm.DB, error) {
 	url, err := utils.ConnectionURLBuilder("postgres")
 
 	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.Post{})
 
 	if err != nil {
 		return nil, err
