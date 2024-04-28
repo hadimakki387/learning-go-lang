@@ -14,7 +14,6 @@ import (
 // PostgreSQLConnection func for connection to PostgreSQL database.
 func PostgreSQLConnection() (*gorm.DB, error) {
 	url, err := utils.ConnectionURLBuilder("postgres")
-	fmt.Print(url)
 
 	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 	db.AutoMigrate(&models.User{})
